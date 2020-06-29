@@ -1,3 +1,9 @@
+// -----------------------------------------------------------------------------
+// モジュールのインポート
+const server = require("express")();
+const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
+
+// -----------------------------------------------------------------------------
 // パラメータ設定
 const line_config = {
 	channelAccessToken: process.env.LINE_ACCESS_TOKEN, // 環境変数からアクセストークンをセットしています
