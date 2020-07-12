@@ -54,7 +54,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
 					console.log(response.text)
 					if (responses[0].queryResult && responses[0].queryResult.action == "handle-delivery-order") {
 						// console.log(response.text)
-						console.log(aaaaaaaa)
+						console.log("aaaaaaaa")
 						// console.log(responses[0].queryResult && responses[0].queryResult.action)
 						let message_text
 						if (responses[0].queryResult.parameters.fields.menu.stringValue) {
