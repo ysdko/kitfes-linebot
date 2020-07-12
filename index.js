@@ -42,6 +42,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
 		console.log(event.message.type)
 		if (event.type == "message" && event.message.type == "text") {
 			events_processed.push(
+				console.log("test"),
 				session_client.detectIntent({
 					session: session_client.sessionPath(process.env.GOOGLE_PROJECT_ID, event.source.userId),
 					queryInput: {
@@ -50,8 +51,11 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
 							languageCode: "ja",
 						}
 					}
-				}).then((responses) => {
+					
+				},console.log("a")
+				).then((responses) => {
 					console.log(response.text)
+					console.log("kakiku")
 					if (responses[0].queryResult && responses[0].queryResult.action == "handle-delivery-order") {
 						// console.log(response.text)
 						console.log("aaaaaaaa")
