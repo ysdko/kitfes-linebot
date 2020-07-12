@@ -1,75 +1,76 @@
-"use strict";
-
-/** 
- * Import Packages
- */
+// -----------------------------------------------------------------------------
+// モジュールのインポート
 const server = require("express")();
-const bot_express = require("bot-express");
+const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
+const dialogflow = require("dialogflow");
 
-/** 
- * Middleware Configuration
- */
-server.listen(process.env.PORT || 5000, () => {
-    console.log("server is running...");
+// -----------------------------------------------------------------------------
+// パラメータ設定
+const line_config = {
+	channelAccessToken: process.env.LINE_ACCESS_TOKEN, // 環境変数からアクセストークンをセットしています
+	channelSecret: process.env.LINE_CHANNEL_SECRET // 環境変数からChannel Secretをセットしています
+};
+
+// -----------------------------------------------------------------------------
+// Webサーバー設定
+server.listen(process.env.PORT || 3000);
+
+// APIコールのためのクライアントインスタンスを作成
+const bot = new line.Client(line_config);
+
+// Dialogflowのクライアントインスタンスを作成
+const session_client = new dialogflow.SessionsClient({
+	project_id: process.env.GOOGLE_PROJECT_ID,
+	credentials: {
+		client_email: process.env.GOOGLE_CLIENT_EMAIL,
+		private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n")
+	}
 });
 
-/** 
- * Mount bot-express
- */
-server.use("/bot/webhook", bot_express({
-    language: "ja",
-    messenger: {
-        line: {
-            channel_id: process.env.LINE_BOT_CHANNEL_ID,
-            channel_secret: process.env.LINE_BOT_CHANNEL_SECRET
-        }
-    },
-    nlu: {
-        type: "dialogflow",
-        options: {
-            project_id: process.env.GOOGLE_PROJECT_ID,
-            client_email: process.env.GOOGLE_CLIENT_EMAIL,
-            private_key: process.env.GOOGLE_PRIVATE_KEY,
-            language: "ja"
-        }
-    },
-    parser: [{
-        type: "dialogflow",
-        options: {
-            project_id: process.env.GOOGLE_PROJECT_ID,
-            client_email: process.env.GOOGLE_CLIENT_EMAIL,
-            private_key: process.env.GOOGLE_PRIVATE_KEY,
-            language: "ja"
-        }
-    }],
-    memory: {
-        type: process.env.MEMORY_TYPE || "memory-cache", // memory-cache | redis
-        retention: Number(process.env.MEMORY_RETENTION),
-        options: {
-            url: process.env.REDIS_URL
-        }
-    },
-    translator: {
-        type: "google",
-        enable_lang_detection: false,
-        enable_translation: false,
-        options: {
-            project_id: process.env.GOOGLE_PROJECT_ID,
-            client_email: process.env.GOOGLE_CLIENT_EMAIL,
-            private_key: process.env.GOOGLE_PRIVATE_KEY
-        }
-    },
-    logger: {
-        type: process.env.LOGGER_TYPE || "stdout", // stdout | firestore
-        options: { // Options for firestore.
-            project_id: process.env.FIREBASE_PROJECT_ID,
-            client_email: process.env.FIREBASE_CLIENT_EMAIL,
-            private_key: process.env.FIREBASE_PRIVATE_KEY,
-        }
-    },
-    skill: {
-        default: process.env.DEFAULT_SKILL
-    }
-}));
+// -----------------------------------------------------------------------------
+// ルーター設定
+server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
+	// 先行してLINE側にステータスコード200でレスポンスする。
+	res.sendStatus(200);
 
-module.exports = server;
+	// すべてのイベント処理のプロミスを格納する配列。
+	let events_processed = [];
+
+	// イベントオブジェクトを順次処理。
+	req.body.events.forEach((event) => {
+		// この処理の対象をイベントタイプがメッセージで、かつ、テキストタイプだった場合に限定。
+		if (event.type == "message" && event.message.type == "text") {
+			events_processed.push(
+				session_client.detectIntent({
+					session: session_client.sessionPath(process.env.GOOGLE_PROJECT_ID, event.source.userId),
+					queryInput: {
+						text: {
+							text: event.message.text,
+							languageCode: "ja",
+						}
+					}
+				}).then((responses) => {
+					if (responses[0].queryResult && responses[0].queryResult.action == "handle-delivery-order") {
+						let message_text
+						if (responses[0].queryResult.parameters.fields.menu.stringValue) {
+							message_text = `毎度！${responses[0].queryResult.parameters.fields.menu.stringValue}ね。どちらにお届けしましょ？`;
+						} else {
+							message_text = `毎度！ご注文は？`;
+						}
+						return bot.replyMessage(event.replyToken, {
+							type: "text",
+							text: message_text
+						});
+					}
+				})
+			);
+		}
+	});
+
+	// すべてのイベント処理が終了したら何個のイベントが処理されたか出力。
+	Promise.all(events_processed).then(
+		(response) => {
+			console.log(`${response.length} event(s) processed.`);
+		}
+	);
+});
