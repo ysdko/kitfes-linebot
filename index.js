@@ -54,7 +54,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
 					
 				},console.log("a")
 				).then((responses) => {
-					console.log(response.text)
+					console.log(responses.text)
 					console.log("kakiku")
 					if (responses[0].queryResult && responses[0].queryResult.action == "handle-delivery-order") {
 						// console.log(response.text)
