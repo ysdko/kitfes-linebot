@@ -153,14 +153,14 @@ function lineBot(req, res) {
                         "text": `それなら${bangohan}はどう？`,
                         "actions": [
                             {
-                                "type": "message",
+                                "type": "postback",
                                 "label": "ミスコン",
-                                "text": `楽しんで！"
+                                "data": JSON.stringify({ "action": "no" })
                             },
                             {
                                 "type": "message",
-                                "label": "ミスターコン",
-                                "text": 楽しんで！"
+                                "label": "YES",
+                                "text": `楽しんで！`
                             },
                             
                             
