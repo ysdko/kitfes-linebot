@@ -96,7 +96,8 @@ app.post('/hook', line.middleware(config), (req, res) => lineBot(req, res));
 
 
 
-const bangohanList = ["展示", "企画"];
+const bangohanList = ["ミスコン", "ミスターコン"];
+
 const hash = { 'ミスコン': '13:00', 'ミスターコン': '14:00'};
 // line bot 本体
 function lineBot(req, res) {
@@ -144,18 +145,18 @@ function lineBot(req, res) {
         else if (event.type === "postback") {
             // noボタンが押されていた場合
             if (JSON.parse(event.postback.data).action === "kikaku") {
-                const bangohan = bangohanList[Math.floor(Math.random() * bangohanList.length)];
+                const list= bangohanList[Math.floor(Math.random() * bangohanList.length)];
                 promises.push(client.replyMessage(event.replyToken, {
                     "type": "template",
                     "altText": "晩ご飯をレコメンドします",
                     "template": {
                         "type": "confirm",
-                        "text": `それなら${bangohan}はどう？`,
+                        "text": `それなら${list}はどう？`,
                         "actions": [
                             {
                                 "type": "postback",
                                 "label": "NO",
-                                "data": JSON.stringify({ "action": "no" })
+                                "data": JSON.stringify({ "action": "kikaku" })
                             },
                             {
                                 "type": "message",
@@ -164,6 +165,7 @@ function lineBot(req, res) {
                             
                             }
                         ]
+
                     }
                 }));
             } else if (JSON.parse(event.postback.data).action === "tenzi") {
