@@ -126,7 +126,7 @@ function lineBot(req, res) {
                                 "data": JSON.stringify({ "action": "no" })
                             },
                             {
-                                "type": "message", //"YES"が押されたらmessageアクション
+                                "type": "text", //"YES"が押されたらmessageアクション
                                 "label": "YES",
                                 "text": `${bangohan}楽しんできてください！`
                             }
