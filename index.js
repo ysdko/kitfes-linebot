@@ -118,17 +118,17 @@ function lineBot(req, res) {
                     "altText": "どっちがみたい？",
                     "template": {
                         "type": "buttons",
-                        "text": `${bangohan}はどう？`,
+                        // "text": `${bangohan}はどう？`,
                         "actions": [
+                            // {
+                            //     "type": "postback",
+                            //     "label": "NO",
+                            //     "data": JSON.stringify({ "action": "no" })
+                            // },
                             {
                                 "type": "postback",
-                                "label": "NO",
-                                "data": JSON.stringify({ "action": "no" })
-                            },
-                            {
-                                "type": "message",
-                                "label": "YES",
-                                "text": `今日の晩ご飯は${bangohan}で決まり！`
+                                "label": "展示",
+                                "data": JSON.stringify({ "action": "tenzi" })
                             },
                             {
                                 "type": "postback",
@@ -143,7 +143,7 @@ function lineBot(req, res) {
         // イベントタイプが"postback"だった場合
         else if (event.type === "postback") {
             // noボタンが押されていた場合
-            if (JSON.parse(event.postback.data).action === "no") {
+            if (JSON.parse(event.postback.data).action === "kikaku") {
                 const bangohan = bangohanList[Math.floor(Math.random() * bangohanList.length)];
                 promises.push(client.replyMessage(event.replyToken, {
                     "type": "template",
@@ -155,18 +155,42 @@ function lineBot(req, res) {
                             {
                                 "type": "postback",
                                 "label": "ミスコン",
-                                "data": JSON.stringify({ "action": "no" })
+                                "text": `13:00からです！楽しんで！`
                             },
                             {
                                 "type": "message",
-                                "label": "YES",
-                                "text": `楽しんで！`
+                                "label": "ミスターコン",
+                                "text": `14:00からです！楽しんで！`
                             },
                             
                             
                         ]
                     }
                 }));
+            } else if (JSON.parse(event.postback.data).action === "tenzi") {
+                const bangohan = bangohanList[Math.floor(Math.random() * bangohanList.length)];
+                promises.push(client.replyMessage(event.replyToken, {
+                    "type": "template",
+                    "altText": "おすすめ",
+                    "template": {
+                        "type": "buttons",
+                        "actions": [
+                            {
+                                "type": "postback",
+                                "label": "サークル展示",
+                                "text": `13:00からです！楽しんで！`
+                            },
+                            {
+                                "type": "message",
+                                "label": "研究展示",
+                                "text": `14:00からです！楽しんで！`
+                            },
+
+
+                        ]
+                    }
+                }));
+                
             }
         }
     });
