@@ -177,14 +177,14 @@ function lineBot(req, res) {
                         "text": `どっちがみたい`,
                         "actions": [
                             {
-                                "type": "messsage",
-                                "label": "サークル展示",
-                                "text": `13:00からです！楽しんで！`
+                                type: "messsage",
+                                label: "サークル展示",
+                                text: `13:00からです！楽しんで！`
                             },
                             {
-                                "type": "message",
-                                "label": "研究展示",
-                                "text": `14:00からです！楽しんで！`
+                                type: "message",
+                                label: "研究展示",
+                                text: `14:00からです！楽しんで！`
                             },
 
 
