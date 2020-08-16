@@ -82,8 +82,8 @@ const app = express();
 const line = require('@line/bot-sdk');// sdkインポート
 
 const config = {
-    channelAccessToken: process.env.BANGOHAN_RECOMMEND_ACCESS_TOKEN, // 環境変数からアクセストークンをセット
-    channelSecret: process.env.BANGOHAN_RECOMMEND_SECRET_KEY // 環境変数からChannel Secretをセット
+    channelAccessToken: process.env.LINE_ACCESS_TOKEN, // 環境変数からアクセストークンをセット
+    channelSecret: process.env.LINE_CHANNEL_SECRET // 環境変数からChannel Secretをセット
 };
 const client = new line.Client(config); // APIコールのためのクライアントインスタンスを作成
 
