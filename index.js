@@ -93,7 +93,11 @@ app.listen(port, () => console.log(`Listening on port ${port}...`));
 // WebHookのエンドポイント
 app.post('/hook', line.middleware(config), (req, res) => lineBot(req, res));
 
-const bangohanList = ["SAINO", "章吉", "もっちゃん", "なかよし", "学食", "夕月庵", "チャイナ", "コンビニ", "自炊"];
+
+
+
+const bangohanList = ["展示", "企画"];
+const hash = { 'ミスコン': '13:00', 'ミスターコン': '14:00'};
 // line bot 本体
 function lineBot(req, res) {
     res.status(200).end(); // すぐにLINE側にステータスコード200でレスポンス
@@ -107,24 +111,24 @@ function lineBot(req, res) {
         // イベントタイプが"message"で、typeが"text"だった場合
         if (event.type === "message" && event.message.type == "text") {
             // メッセージの内容が”晩ご飯”なら晩ご飯をレコメンドする
-            if (event.message.text === "晩ご飯") {
+            if (event.message.text === "おすすめ") {
                 const bangohan = bangohanList[Math.floor(Math.random() * bangohanList.length)];// 晩ご飯リストからランダムに要素を取得
                 promises.push(client.replyMessage(event.replyToken, {
                     "type": "template",
-                    "altText": "晩ご飯をレコメンドします",
+                    "altText": "どっちがみたい？",
                     "template": {
                         "type": "confirm",
-                        "text": `今日の晩ご飯は${bangohan}でどう？`,
+                        "text": `${bangohan}はどう？`,
                         "actions": [
                             {
                                 "type": "postback", //"NO"が押されたらpostbackアクション
-                                "label": "NO",
+                                "label": "他がいい！",
                                 "data": JSON.stringify({ "action": "no" })
                             },
                             {
                                 "type": "message", //"YES"が押されたらmessageアクション
                                 "label": "YES",
-                                "text": `今日の晩ご飯は${bangohan}で決まり！`
+                                "text": `${bangohan}楽しんできてください！`
                             }
                         ]
                     }
@@ -138,7 +142,7 @@ function lineBot(req, res) {
                 const bangohan = bangohanList[Math.floor(Math.random() * bangohanList.length)];
                 promises.push(client.replyMessage(event.replyToken, {
                     "type": "template",
-                    "altText": "晩ご飯をレコメンドします",
+                    "altText": "おすすめ",
                     "template": {
                         "type": "confirm",
                         "text": `それなら${bangohan}はどう？`,
@@ -151,7 +155,7 @@ function lineBot(req, res) {
                             {
                                 "type": "message",
                                 "label": "YES",
-                                "text": `今日の晩ご飯は${bangohan}で決まり！`
+                                "text": `${bangohan}楽しんできてください！`
                             }
                         ]
                     }
