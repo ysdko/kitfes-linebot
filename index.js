@@ -161,7 +161,7 @@ function lineBot(req, res) {
                             {
                                 "type": "message",
                                 "label": "YES",
-                                "text": `今日の晩ご飯は${bangohan}で決まり！`
+                                "text": `たのしんで！`
                             
                             }
                         ]
