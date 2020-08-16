@@ -118,7 +118,7 @@ function lineBot(req, res) {
                     "altText": "どっちがみたい？",
                     "template": {
                         "type": "buttons",
-                        // "text": `${bangohan}はどう？`,
+                        "text": `どれがみたい？`,
                         "actions": [
                             // {
                             //     "type": "postback",
