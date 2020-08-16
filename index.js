@@ -155,13 +155,13 @@ function lineBot(req, res) {
                         "actions": [
                             {
                                 "type": "postback",
-                                "label": "NO",
+                                "label": "他がいい",
                                 "data": JSON.stringify({ "action": "kikaku" })
                             },
                             {
                                 "type": "message",
-                                "label": "YES",
-                                "text": `たのしんで！`
+                                "label": "よき！",
+                                "text": `13:00からです！たのしんで！`
                             
                             }
                         ]
@@ -169,7 +169,6 @@ function lineBot(req, res) {
                     }
                 }));
             } else if (JSON.parse(event.postback.data).action === "tenzi") {
-                const bangohan = bangohanList[Math.floor(Math.random() * bangohanList.length)];
                 promises.push(client.replyMessage(event.replyToken, {
                     "type": "template",
                     "altText": "おすすめ",
