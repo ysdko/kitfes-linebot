@@ -117,18 +117,23 @@ function lineBot(req, res) {
                     "type": "template",
                     "altText": "どっちがみたい？",
                     "template": {
-                        "type": "confirm",
+                        "type": "buttons",
                         "text": `${bangohan}はどう？`,
                         "actions": [
                             {
-                                "type": "postback", //"NO"が押されたらpostbackアクション
-                                "label": "他がいい！",
+                                "type": "postback",
+                                "label": "NO",
                                 "data": JSON.stringify({ "action": "no" })
                             },
                             {
-                                "type": "text", //"YES"が押されたらmessageアクション
+                                "type": "message",
                                 "label": "YES",
-                                "text": `${bangohan}楽しんできてください！`
+                                "text": `今日の晩ご飯は${bangohan}で決まり！`
+                            },
+                            {
+                                "type": "postback",
+                                "label": "企画",
+                                "data": JSON.stringify({ "action": "kikaku" })
                             }
                         ]
                     }
@@ -144,19 +149,21 @@ function lineBot(req, res) {
                     "type": "template",
                     "altText": "おすすめ",
                     "template": {
-                        "type": "confirm",
+                        "type": "buttons",
                         "text": `それなら${bangohan}はどう？`,
                         "actions": [
                             {
-                                "type": "postback",
-                                "label": "NO",
-                                "data": JSON.stringify({ "action": "no" })
+                                "type": "message",
+                                "label": "ミスコン",
+                                "text": `楽しんで！"
                             },
                             {
                                 "type": "message",
-                                "label": "YES",
-                                "text": `${bangohan}楽しんできてください！`
-                            }
+                                "label": "ミスターコン",
+                                "text": 楽しんで！"
+                            },
+                            
+                            
                         ]
                     }
                 }));
