@@ -10,7 +10,7 @@ module.exports = class SkillHandleDeliveryOrder {
 					altText: "出前のメニューは松、竹、梅の3種類になっとりますけどどちらにしましょっ？",
 					template: {
 						type: "buttons",
-						text: "ご注文は？",
+						text: "何が見たい？",
 						actions: [
 							{ type: "message", label: "松", text: "松" },
 							{ type: "message", label: "竹", text: "竹" },
