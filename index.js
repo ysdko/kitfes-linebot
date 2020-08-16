@@ -20,8 +20,10 @@ server.use("/bot/webhook", bot_express({
     language: "ja",
     messenger: {
         line: {
-            channel_id: process.env.LINE_CHANNEL_ID,
-            channel_secret: process.env.LINE_CHANNEL_SECRET
+            // channel_id: process.env.LINE_CHANNEL_ID,
+            // channel_secret: process.env.LINE_CHANNEL_SECRET
+            channel_id: '2f13a44596ce0204276a12c9f3d31630',
+            channel_secret: '7OTzSy6u/t52SwHF8NdvnLsKoDIds+GeR+vA17TvJggY+EyHyQdUvkBO2/yAJlwn+nYJpKnb9U6B9GKHhmfaj7r/DPfH5FgQylgDelu9khHEvHdDYmGD3dQEjZI0s83bn8YVOk0WH4sqnsXiDTdXkAdB04t89/1O/w1cDnyilFU='
         }
     },
     nlu: {
