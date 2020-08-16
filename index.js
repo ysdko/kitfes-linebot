@@ -147,23 +147,22 @@ function lineBot(req, res) {
                 const bangohan = bangohanList[Math.floor(Math.random() * bangohanList.length)];
                 promises.push(client.replyMessage(event.replyToken, {
                     "type": "template",
-                    "altText": "おすすめ",
+                    "altText": "晩ご飯をレコメンドします",
                     "template": {
-                        "type": "buttons",
-                        "text": `どっちがみたい`,
+                        "type": "confirm",
+                        "text": `それなら${bangohan}はどう？`,
                         "actions": [
                             {
-                                "type": "message",
-                                "label": "ミスコン",
-                                "text": `13:00からです！楽しんで！`
+                                "type": "postback",
+                                "label": "NO",
+                                "data": JSON.stringify({ "action": "no" })
                             },
                             {
                                 "type": "message",
-                                "label": "ミスターコン",
-                                "text": `14:00からです！楽しんで！`
-                            },
+                                "label": "YES",
+                                "text": `今日の晩ご飯は${bangohan}で決まり！`
                             
-                            
+                            }
                         ]
                     }
                 }));
