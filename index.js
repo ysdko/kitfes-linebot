@@ -118,7 +118,7 @@ function lineBot(req, res) {
                     "altText": "どっちがみたい？",
                     "template": {
                         "type": "buttons",
-                        "text": `どれがみたい？`,
+                        "text": `どっちがみたい？`,
                         "actions": [
                             // {
                             //     "type": "postback",
@@ -150,10 +150,10 @@ function lineBot(req, res) {
                     "altText": "おすすめ",
                     "template": {
                         "type": "buttons",
-                        "text": `それなら${bangohan}はどう？`,
+                        "text": `どっちがみたい`,
                         "actions": [
                             {
-                                "type": "postback",
+                                "type": "message",
                                 "label": "ミスコン",
                                 "text": `13:00からです！楽しんで！`
                             },
@@ -174,9 +174,10 @@ function lineBot(req, res) {
                     "altText": "おすすめ",
                     "template": {
                         "type": "buttons",
+                        "text": `どっちがみたい`,
                         "actions": [
                             {
-                                "type": "postback",
+                                "type": "messsage",
                                 "label": "サークル展示",
                                 "text": `13:00からです！楽しんで！`
                             },
